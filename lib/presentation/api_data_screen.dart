@@ -291,11 +291,9 @@ class ChildDataWidget extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2),
-            Expanded(
-              child: Text(
-                subTitle,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Text(
+              subTitle,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
