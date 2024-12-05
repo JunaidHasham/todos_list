@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todos_list/business_logic/to_do_events.dart';
+import 'package:todos_list/presentation/api_data_screen.dart';
 
 import '../business_logic/to_do_states.dart';
 import '../business_logic/todo_bloc.dart';
@@ -28,7 +29,7 @@ class _TodosScreenState extends State<TodosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue.shade300,
+        backgroundColor: Colors.blue,
         onPressed: () {
           _titleController.clear();
 
@@ -122,23 +123,41 @@ class _TodosScreenState extends State<TodosScreen> {
       ),
       backgroundColor: Colors.blue,
       body: BlocListener<ToDoBloc, ToDoStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is Failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage)),
+            );
+          }
+        },
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             flex: 3,
             child: Container(
               padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.format_list_bulleted,
-                      size: 34,
-                      color: Colors.blue.shade600,
+                  SizedBox(height: 18),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ApiDataScreen()),
+                          (_) => false,
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.format_list_bulleted,
+                          size: 34,
+                          color: Colors.blue.shade600,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 18),

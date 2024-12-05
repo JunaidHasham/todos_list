@@ -4,6 +4,7 @@ import 'package:todos_list/business_logic/to_do_events.dart';
 import 'package:todos_list/business_logic/to_do_states.dart';
 import 'package:todos_list/business_logic/todo_bloc.dart';
 import 'package:todos_list/data/models/device.dart';
+import 'package:todos_list/presentation/todos_screen.dart';
 
 class ApiDataScreen extends StatelessWidget {
   const ApiDataScreen({super.key});
@@ -11,11 +12,7 @@ class ApiDataScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('API Data Screen'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
+      backgroundColor: Colors.blue,
       body: BlocProvider(
         create: (context) => ToDoBloc()..add(GetApiData()),
         child: BlocListener<ToDoBloc, ToDoStates>(
@@ -24,45 +21,127 @@ class ApiDataScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.errorMessage)),
               );
-            } else if (state is ApiDataSuccess) {
-              print('\nChief : state is ApiDataSuccess :: 1');
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder<ToDoBloc, ToDoStates>(builder: (context, state) {
-              if (state is Initial) {
-                return SizedBox();
-              } else if (state is ApiDataSuccess) {
-                print('\nChief : state is ApiDataSuccess :: 2');
-
-                return ListView.separated(
-                  itemBuilder: (context, index) => ExpansionTile(
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    leading: CircleAvatar(
-                      radius: 18,
-                      child: Center(
-                        child: Text(state.deviceList[index].id),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  child: ListView(children: [
+                    SizedBox(height: 18),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TodosScreen()),
+                            (_) => false,
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.format_list_bulleted,
+                            size: 34,
+                            color: Colors.blue.shade600,
+                          ),
+                        ),
                       ),
                     ),
-                    title: Text(state.deviceList[index].name),
-                    childrenPadding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 8,
+                    SizedBox(height: 18),
+                    Text(
+                      'Devices (API)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                        color: Colors.white,
+                      ),
                     ),
-                    children: state.deviceList[index].data != null
-                        ? getChildData(state.deviceList[index].data!)
-                        : [],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: BlocBuilder<ToDoBloc, ToDoStates>(
+                        builder: (context, state) {
+                          if (state is ApiDataSuccess) {
+                            return Text(
+                              '${state.deviceList.length} Devices',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              '0 Devices',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(22),
+                      topRight: Radius.circular(22),
+                    ),
                   ),
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: state.deviceList.length,
-                );
-              } else if (state is Loading) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return SizedBox();
-              }
-            }),
+                  padding: EdgeInsets.all(16),
+                  child: BlocBuilder<ToDoBloc, ToDoStates>(
+                      builder: (context, state) {
+                    if (state is Initial) {
+                      return SizedBox();
+                    } else if (state is ApiDataSuccess) {
+                      print('\nChief : state is ApiDataSuccess :: 2');
+
+                      return ListView.separated(
+                        itemBuilder: (context, index) => ExpansionTile(
+                          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                          leading: CircleAvatar(
+                            radius: 18,
+                            child: Center(
+                              child: Text(state.deviceList[index].id),
+                            ),
+                          ),
+                          title: Text(state.deviceList[index].name),
+                          childrenPadding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 8,
+                          ),
+                          children: state.deviceList[index].data != null
+                              ? getChildData(state.deviceList[index].data!)
+                              : [],
+                        ),
+                        separatorBuilder: (context, index) => Divider(),
+                        itemCount: state.deviceList.length,
+                      );
+                    } else if (state is Loading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                        ),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -212,9 +291,11 @@ class ChildDataWidget extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2),
-            Text(
-              subTitle,
-              overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: Text(
+                subTitle,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),

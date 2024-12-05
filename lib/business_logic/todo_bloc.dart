@@ -57,8 +57,6 @@ class ToDoBloc extends Bloc<ToDoEvents, ToDoStates> {
     on<UpdateTodos>((event, emit) async {
       emit(Loading());
 
-      await Future.delayed(Duration(seconds: 2));
-
       try {
         int update = await databaseRepository.updateTodos(event.id);
 
@@ -72,8 +70,6 @@ class ToDoBloc extends Bloc<ToDoEvents, ToDoStates> {
 
     on<DeleteTodos>((event, emit) async {
       emit(Loading());
-
-      await Future.delayed(Duration(seconds: 2));
 
       try {
         int update = await databaseRepository.deleteTodos(event.id);
