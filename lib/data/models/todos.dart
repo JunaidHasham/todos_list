@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'todos.g.dart';
 
+/// Run command in terminal - dart run build_runner build --delete-conflicting-outputs
+
 @JsonSerializable()
 class ToDos {
   final int id;
