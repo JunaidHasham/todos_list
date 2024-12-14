@@ -29,7 +29,7 @@ class _TodosScreenState extends State<TodosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.pink,
         onPressed: () {
           _titleController.clear();
 
@@ -53,7 +53,7 @@ class _TodosScreenState extends State<TodosScreen> {
                     Text(
                       'New Task',
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Colors.pink,
                         fontWeight: FontWeight.bold,
                         fontSize: 28,
                       ),
@@ -121,7 +121,7 @@ class _TodosScreenState extends State<TodosScreen> {
           color: Colors.white,
         ),
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.pink,
       body: BlocListener<ToDoBloc, ToDoStates>(
         listener: (context, state) {
           if (state is Failure) {
@@ -153,9 +153,9 @@ class _TodosScreenState extends State<TodosScreen> {
                         radius: 30,
                         backgroundColor: Colors.white,
                         child: Icon(
-                          Icons.format_list_bulleted,
+                          Icons.verified_user,
                           size: 34,
-                          color: Colors.blue.shade600,
+                          color: Colors.pink.shade600,
                         ),
                       ),
                     ),
@@ -221,7 +221,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                     child: Text('All'),
                                     style: ButtonStyle(
                                       foregroundColor: WidgetStatePropertyAll(
-                                        Colors.blue,
+                                        Colors.pink,
                                       ),
                                     ),
                                   ),
@@ -301,7 +301,7 @@ class _TodosScreenState extends State<TodosScreen> {
                             ),
                           ),
                           value: state.todosList[index].status == 1,
-                          activeColor: Colors.blue,
+                          activeColor: Colors.pink,
                           onChanged: (value) {
                             showDialog(
                               context: context,
@@ -372,7 +372,7 @@ class _TodosScreenState extends State<TodosScreen> {
                   } else if (state is Loading) {
                     return Center(
                       child: CircularProgressIndicator(
-                        color: Colors.blue,
+                        color: Colors.pink,
                       ),
                     );
                   } else {

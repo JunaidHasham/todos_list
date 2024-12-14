@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.black,
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.pink,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
